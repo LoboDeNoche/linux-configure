@@ -1,5 +1,15 @@
+" Install vim-plugged if not already installed
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 " PLUGINS
 call plug#begin()
+
+" Repeat '.' for plugins
+Plug 'tpope/vim-repeat'
 
 " Autocomplete
 Plug 'ncm2/ncm2'
@@ -34,6 +44,18 @@ Plug 'honza/vim-snippets'
 
 " Startup menu
 Plug 'mhinz/vim-startify'
+let g:startify_lists = [
+          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+          \ { 'type': 'files',     'header': ['   MRU']            },
+          \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+          \ { 'type': 'sessions',  'header': ['   Sessions']       },
+          \ { 'type': 'commands',  'header': ['   Commands']       },
+          \ ]
+
+let g:startify_bookmarks = []
+          " \ '~/...',
+          " \ '~/...',
+          " \ ]
 
 " FZF!
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -79,13 +101,17 @@ Plug 'tpope/vim-commentary'
 " Trailing symbols
 Plug 'ntpeters/vim-better-whitespace'
 let g:better_whitespace_enabled=1
+" nnoremap <F4> :ToggleWhitespace<CR>
+
 set showbreak=↪\
-set listchars=tab:→\ ,eol:↲,nbsp:␣,space:•,extends:⟩,precedes:⟨
+set listchars=tab:→\ ,eol:↲,nbsp:␣,extends:⟩,precedes:⟨
 nnoremap <F3> :set list!<CR>
-nnoremap <F4> :ToggleWhitespace<CR>
 
 " C++ highlighting
 Plug 'octol/vim-cpp-enhanced-highlight'
+
+" GoLang
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " GIT
 Plug 'tpope/vim-fugitive'
@@ -98,6 +124,18 @@ map <F2> :NERDTreeToggle<CR>
 " Icons for Files
 " Need to install this https://aur.archlinux.org/packages/nerd-fonts-source-code-pro/
 Plug 'ryanoasis/vim-devicons'
+
+" Searching in buffer
+Plug 'justinmk/vim-sneak'
+
+Plug 'Yggdroot/indentLine'
+
+let g:indentLine_leadingSpaceChar = '·'
+
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indent_guides_auto_colors = 1
+let g:indentLine_fileTypeExclude = ['fzf', 'startify', 'vim', 'txt']
+nnoremap <F4> :LeadingSpaceToggle<CR>
 
 " Spell Checking
 " Need to install cppcheck and other https://github.com/neomake/neomake/wiki/Makers
@@ -137,6 +175,9 @@ syntax enable
 set termguicolors
 set background=dark
 colorscheme vitaminonec
+
+" Not nice, but need for work code base
+set shiftwidth=4
 
 " save 500 last commands
 set history=500
