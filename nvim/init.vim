@@ -62,11 +62,19 @@ if !exists('g:vscode')
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
 
+    command! -bang -nargs=* Rg
+		\ call fzf#vim#grep(
+		\ 'rg --column --hidden -g "!{cscope.*}" --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+		\ fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
+
+    nnoremap <silent> <Leader>f :Files<CR>
+    nnoremap <silent> <Leader>g :Rg<CR>
+
     " Status Bar
     Plug 'itchyny/lightline.vim'
     set noshowmode
     let g:lightline = {
-	  \ 'colorscheme': 'powerline',
+	  \ 'colorscheme': 'embark',
 	  \ 'active': {
 	  \   'left': [ [ 'mode', 'paste' ],
 	  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -114,10 +122,9 @@ if !exists('g:vscode')
     " GoLang
     " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
-    " Git
+    " GIT
     Plug 'tpope/vim-fugitive'
     Plug 'junegunn/gv.vim'
-    Plug 'rhysd/git-messenger.vim'
 
     " File manager
     Plug 'preservim/nerdtree'
@@ -137,6 +144,8 @@ if !exists('g:vscode')
     let g:indentLine_fileTypeExclude = ['fzf', 'startify', 'vim', 'txt']
     nnoremap <F4> :LeadingSpaceToggle<CR>
 
+    Plug 'rhysd/git-messenger.vim'
+
     " Spell Checking
     " Need to install cppcheck and other https://github.com/neomake/neomake/wiki/Makers
     Plug 'neomake/neomake'
@@ -151,6 +160,7 @@ if !exists('g:vscode')
     Plug 'sjl/badwolf'
     Plug 'gkapfham/vim-vitamin-onec'
     Plug 'dracula/vim'
+    Plug 'skbolton/embark'
 
     call plug#end()
 
@@ -169,12 +179,14 @@ if !exists('g:vscode')
 
     " add some numbers and highlighting!
     set number
+    set relativenumber
     syntax enable
 
     " Highlighting
     set termguicolors
     set background=dark
-    colorscheme vitaminonec
+    " colorscheme vitaminonec
+    colorscheme embark
 
     " Not nice, but need for work code base
     set shiftwidth=4
